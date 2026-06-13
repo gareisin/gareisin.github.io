@@ -1,0 +1,130 @@
+/* Portfolio theme — clean, professional, no external dependencies. */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  background: #F0F4F8; color: #1A2332; font-size: 15px; line-height: 1.6;
+}
+a { color: #2E75B6; }
+
+/* Header */
+.site-header {
+  background: #1F4E79; color: #fff; padding: 0 40px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.site-header .brand { font-size: 20px; font-weight: 700; letter-spacing: 0.01em; }
+.site-header nav a {
+  color: #C8DCF0; text-decoration: none; font-size: 14px; margin-left: 22px;
+}
+.site-header nav a:hover { color: #fff; }
+
+/* Layout */
+.wrap { max-width: 920px; margin: 0 auto; padding: 48px 32px 64px; }
+
+/* Hero */
+.hero { margin-bottom: 40px; }
+.hero h1 { font-size: 34px; font-weight: 700; color: #1F4E79; margin-bottom: 6px; }
+.hero .tagline { font-size: 17px; color: #2E75B6; font-weight: 600; margin-bottom: 18px; }
+.hero p.about { font-size: 16px; color: #3A4A5C; max-width: 660px; }
+
+/* Contact row */
+.contact { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.contact a, .contact span.linkbtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #fff; border: 1px solid #D8E4EF; border-radius: 6px;
+  padding: 9px 16px; font-size: 14px; font-weight: 600; color: #1F4E79;
+  text-decoration: none; transition: box-shadow 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+.contact a:hover, .contact span.linkbtn:hover {
+  box-shadow: 0 3px 12px rgba(31,78,121,0.14); transform: translateY(-1px);
+}
+
+/* Section heading */
+.section-heading {
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: #6B7A8D; margin: 40px 0 16px; padding-bottom: 6px; border-bottom: 1px solid #E2EAF3;
+}
+
+/* Project card */
+.project-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.project-card {
+  background: #fff; border: 1px solid #D8E4EF; border-radius: 8px; padding: 26px 28px;
+  text-decoration: none; color: inherit; display: block;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.project-card:hover { box-shadow: 0 4px 16px rgba(31,78,121,0.13); transform: translateY(-2px); }
+.project-card .card-title { font-size: 19px; font-weight: 700; color: #1F4E79; margin-bottom: 8px; }
+.project-card .card-summary { font-size: 15px; color: #3A4A5C; margin-bottom: 14px; }
+.project-card .card-link { font-size: 14px; color: #2E75B6; font-weight: 600; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.tag {
+  font-size: 12px; background: #EEF5FC; color: #1A3A5C; border: 1px solid #C5D8EF;
+  border-radius: 4px; padding: 3px 9px;
+}
+
+/* Project detail page */
+.breadcrumb { font-size: 13px; color: #6B7A8D; margin-bottom: 18px; }
+.breadcrumb a { text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+.page-hero { border-bottom: 1px solid #D8E4EF; padding-bottom: 26px; margin-bottom: 32px; }
+.page-hero h1 { font-size: 28px; font-weight: 700; color: #1F4E79; margin-bottom: 10px; }
+.page-hero .summary { font-size: 16px; color: #3A4A5C; max-width: 640px; }
+
+.section {
+  background: #fff; border: 1px solid #D8E4EF; border-radius: 8px;
+  padding: 26px 30px; margin-bottom: 24px;
+}
+.section .section-title {
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: #2E75B6; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #E3F1FF;
+}
+.section h3 { font-size: 15px; font-weight: 700; color: #1F4E79; margin: 16px 0 6px; }
+.section h3:first-of-type { margin-top: 0; }
+.section p { color: #3A4A5C; margin-bottom: 12px; }
+.section p:last-child { margin-bottom: 0; }
+.section ul { list-style: none; padding: 0; margin: 8px 0; }
+.section ul li { font-size: 14px; color: #3A4A5C; padding: 4px 0 4px 16px; position: relative; }
+.section ul li::before { content: "\2013"; position: absolute; left: 0; color: #7BA7C9; }
+
+/* Pipeline strip */
+.pipeline { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.pipe-step {
+  background: #EEF5FC; border: 1px solid #C5D8EF; border-radius: 6px;
+  padding: 12px 16px; flex: 1; min-width: 130px;
+}
+.pipe-step .step-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: #2E75B6; margin-bottom: 4px;
+}
+.pipe-step .step-desc { font-size: 13px; color: #3A4A5C; }
+
+/* Provider tiers */
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0; }
+.tier { border-radius: 6px; padding: 14px 16px; border: 1px solid; }
+.tier-mock { background: #F0FFF4; border-color: #B7DFCA; }
+.tier-local { background: #EEF5FC; border-color: #C5D8EF; }
+.tier-frontier { background: #FDF5FF; border-color: #DABFEF; }
+.tier .tier-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.tier-mock .tier-name { color: #1A6B3C; }
+.tier-local .tier-name { color: #1060A0; }
+.tier-frontier .tier-name { color: #5A1090; }
+.tier .tier-use { font-size: 13px; color: #4A5568; }
+
+.repo-link {
+  display: inline-block; background: #1F4E79; color: #fff; text-decoration: none;
+  font-weight: 600; font-size: 14px; border-radius: 6px; padding: 11px 20px; margin-top: 4px;
+}
+.repo-link:hover { background: #16395C; }
+
+/* Footer */
+.site-footer {
+  text-align: center; color: #8090A8; font-size: 13px; padding: 28px 16px 40px;
+}
+
+@media (max-width: 640px) {
+  .tiers { grid-template-columns: 1fr; }
+  .site-header { padding: 0 20px; }
+  .wrap { padding: 32px 20px 48px; }
+}

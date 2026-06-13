@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Gabe — IT support professional building practical, security-conscious AI and automation systems.">
+<title>Gabe — IT Support & AI Automation</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">Gabe</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="helpdesk-toolkit.html">Help Desk AI Toolkit</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <h1>Gabe</h1>
+    <div class="tagline">IT Support &rarr; AI &amp; Automation</div>
+    <p class="about">
+      I'm an IT support professional moving into AI engineering and automation. I build
+      practical, security-conscious systems that put language models to work on real
+      operational problems &mdash; ticket triage, backlog cleanup, data redaction &mdash; with
+      a strong bias toward keeping humans in the loop, keeping costs low, and keeping
+      sensitive data on infrastructure I control. I read and direct code rather than
+      hand-writing every line, and I care about being able to explain and defend every
+      design decision I ship.
+    </p>
+
+    <div class="contact">
+      <a href="https://github.com/gareisin" target="_blank" rel="noopener">GitHub</a>
+      <!-- LinkedIn: add href once provided -->
+      <a id="linkedin-link" href="https://www.linkedin.com/" target="_blank" rel="noopener" style="display:none">LinkedIn</a>
+      <span class="linkbtn" id="email-link" role="link" tabindex="0">Email</span>
+    </div>
+  </section>
+
+  <div class="section-heading">Featured Project</div>
+
+  <div class="project-grid">
+    <a class="project-card" href="helpdesk-toolkit.html">
+      <div class="card-title">Help Desk AI Toolkit</div>
+      <div class="card-summary">
+        Two LLM-powered tools for an IT help desk on a shared classification core: a
+        Tier-1 <strong>triage agent</strong> that reads a ticket, pulls knowledge-base
+        context, and drafts a response for human approval, and a <strong>bulk
+        categorizer</strong> that cleans up a backlog with a two-stage keyword-then-model
+        pipeline. The headline design choice is a hybrid model architecture &mdash; a
+        frontier model for hard reasoning, a local open-source model for cheap
+        high-volume work &mdash; exposed as a single config switch.
+      </div>
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">LLM / agents</span>
+        <span class="tag">Hybrid local + frontier</span>
+        <span class="tag">Human-in-the-loop</span>
+        <span class="tag">Synthetic data</span>
+      </div>
+      <div class="card-link" style="margin-top:14px;">Read the writeup &rarr;</div>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  Built and maintained by Gabe &middot; <span id="year"></span>
+</footer>
+
+<script>
+  // Year stamp
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Email assembled at runtime so the address never appears in static HTML
+  // (keeps it out of reach of the bulk of harvesting bots, which don't run JS).
+  (function () {
+    var user = 'gareisin', domain = 'gmail.com', addr = user + '@' + domain;
+    var el = document.getElementById('email-link');
+    el.textContent = addr;
+    el.addEventListener('click', function () { window.location.href = 'mailto:' + addr; });
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { window.location.href = 'mailto:' + addr; }
+    });
+  })();
+</script>
+</body>
+</html>

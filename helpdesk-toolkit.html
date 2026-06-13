@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Help Desk AI Toolkit — LLM-powered Tier-1 ticket triage and bulk categorization with a hybrid local/frontier model architecture.">
+<title>Help Desk AI Toolkit — Gabe</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">Gabe</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="helpdesk-toolkit.html">Help Desk AI Toolkit</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Help Desk AI Toolkit</div>
+
+  <div class="page-hero">
+    <h1>Help Desk AI Toolkit</h1>
+    <p class="summary">
+      Two LLM-powered tools for an IT help desk, built on a shared classification core:
+      a Tier-1 triage agent that proposes a response for human review, and a portable
+      bulk categorizer that cleans up a backlog of mis-categorized tickets. The tools are
+      tied together by a hybrid model architecture exposed as a single configuration
+      boundary &mdash; the design decision the whole project is built to demonstrate.
+    </p>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">LLM / agents</span>
+      <span class="tag">Hybrid local + frontier</span>
+      <span class="tag">Human-in-the-loop</span>
+      <span class="tag">Two-stage pipeline</span>
+      <span class="tag">Synthetic data</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Problem</div>
+    <p>
+      Inbound support tickets arrive with wildly uneven detail. Technicians spend their
+      first contact gathering basics &mdash; device, error message, what the user already
+      tried &mdash; before any real work starts. Categorization and priority are applied
+      inconsistently at intake, which makes routing, reporting, and trend analysis
+      unreliable. Separately, historical tickets accumulate wrong, missing, or placeholder
+      categories, so the one field used for reporting and routing can't be trusted.
+    </p>
+    <p>
+      The toolkit attacks both problems: standardize first contact for new tickets, and
+      clean up the category data on old ones &mdash; while keeping a human firmly in
+      control of anything that actually changes a ticket.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tool 1 &mdash; Triage Agent</div>
+    <p>
+      Reads an inbound ticket, retrieves relevant knowledge-base context by keyword match,
+      and produces a structured proposal: a category, a priority, the minimum information a
+      technician still needs, and a drafted Tier-1 reply. Crucially, it is
+      <strong>proposal-only</strong> &mdash; it observes and suggests, and never creates,
+      edits, or closes a ticket on its own. Every output is a draft a technician approves.
+    </p>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="step-label">Ingest</div><div class="step-desc">Read the ticket text</div></div>
+      <div class="pipe-step"><div class="step-label">Retrieve</div><div class="step-desc">Pull relevant KB context</div></div>
+      <div class="pipe-step"><div class="step-label">Propose</div><div class="step-desc">Category, priority, missing info, draft reply</div></div>
+      <div class="pipe-step"><div class="step-label">Review</div><div class="step-desc">Technician approves &mdash; no auto-action</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tool 2 &mdash; Bulk Categorizer</div>
+    <p>
+      A portable, config-driven utility that reads a CSV of tickets and assigns a clean
+      category to each in two stages. A free, offline keyword pass resolves the obvious
+      tickets; only the genuinely ambiguous ones are sent to a model. A dry-run mode shows
+      exactly what would change before anything is written. On the bundled synthetic
+      backlog, the keyword stage alone resolves roughly 85% of tickets before any model is
+      called.
+    </p>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="step-label">Stage 1</div><div class="step-desc">Keyword scorer &mdash; resolves the obvious, free and offline</div></div>
+      <div class="pipe-step"><div class="step-label">Stage 2</div><div class="step-desc">Model fallback &mdash; only the ambiguous tickets</div></div>
+      <div class="pipe-step"><div class="step-label">Output</div><div class="step-desc">Clean CSV with an audit trail of every change</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Architecture &mdash; Hybrid, as One Config Switch</div>
+    <p>
+      Both tools sit on the same model client, which exposes one interface over three
+      interchangeable backends. <strong>Which one runs is a single environment
+      variable</strong> &mdash; no other code changes.
+    </p>
+    <div class="tiers">
+      <div class="tier tier-mock">
+        <div class="tier-name">Deterministic</div>
+        <div class="tier-use">Offline, zero-setup default. Real implementation of the interface, so the whole pipeline runs with no model installed.</div>
+      </div>
+      <div class="tier tier-local">
+        <div class="tier-name">Local model</div>
+        <div class="tier-use">An internally-hosted open-source model. The cheap, high-volume runtime tier &mdash; no ticket data leaves your infrastructure.</div>
+      </div>
+      <div class="tier tier-frontier">
+        <div class="tier-name">Frontier model</div>
+        <div class="tier-use">A top-tier hosted model for the genuinely hard reasoning &mdash; the "architect" tier, used where it earns its cost.</div>
+      </div>
+    </div>
+    <h3>Why this is the point</h3>
+    <p>
+      <strong>Cost scales with difficulty, not volume.</strong> Routine tickets are handled
+      by a keyword pass or a cheap local model; only ambiguous cases reach a frontier model.
+    </p>
+    <p>
+      <strong>Privacy by default.</strong> Point the switch at a local model and ticket text
+      &mdash; which routinely contains names, asset tags, and account details &mdash; never
+      leaves the building. The frontier tier is opt-in, for the work that benefits from it.
+    </p>
+    <p>
+      <strong>Frontier as architect, local as runtime.</strong> A frontier model is ideal
+      for design and supervising edge cases; a small local model is ideal for the thousand
+      routine inferences a day. Making the boundary one config line means you choose per
+      deployment, not per rewrite.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Security Posture</div>
+    <ul>
+      <li><strong>Human-in-the-loop is mandatory.</strong> The agent only ever produces a proposal; it never takes action on a ticket.</li>
+      <li><strong>Model output is untrusted data.</strong> Every model response passes through a validation layer before use &mdash; the category is allowlisted, the priority constrained, the confidence clamped &mdash; so a malformed or surprising response can't propagate downstream.</li>
+      <li><strong>Synthetic data only.</strong> The bundled tickets and knowledge base are generated and seeded; there is no resemblance to any real organization's data.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Try It / Read It</div>
+    <p>
+      The repository is self-contained and runs with zero setup on the default provider
+      &mdash; clone it, generate the synthetic data, and run either tool in three commands.
+      The code is written to be read: legible, commented, and structured so the
+      architecture's selling point is visible rather than buried.
+    </p>
+    <a class="repo-link" href="https://github.com/gareisin/helpdesk-ai-toolkit" target="_blank" rel="noopener">View the code on GitHub &rarr;</a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  Built and maintained by Gabe &middot; <span id="year"></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
