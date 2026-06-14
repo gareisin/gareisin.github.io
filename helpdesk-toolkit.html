@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Help Desk AI Toolkit — LLM-powered Tier-1 ticket triage and bulk categorization with a hybrid local/frontier model architecture.">
+<meta name="description" content="Help Desk AI Toolkit — an autonomous Tier-1 support agent (resolve or escalate) and a bulk categorizer, with a hybrid local/frontier model architecture.">
 <title>Help Desk AI Toolkit — Gabe</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -25,16 +25,17 @@
     <h1>Help Desk AI Toolkit</h1>
     <p class="summary">
       Two LLM-powered tools for an IT help desk, built on a shared classification core:
-      a Tier-1 triage agent that proposes a response for human review, and a portable
-      bulk categorizer that cleans up a backlog of mis-categorized tickets. The tools are
-      tied together by a hybrid model architecture exposed as a single configuration
-      boundary &mdash; the design decision the whole project is built to demonstrate.
+      an autonomous Tier-1 support agent that resolves routine issues with the user and
+      escalates the rest to a technician, and a portable bulk categorizer that cleans up a
+      backlog of mis-categorized tickets. The tools are tied together by a hybrid model
+      architecture exposed as a single configuration boundary &mdash; the design decision
+      the whole project is built to demonstrate.
     </p>
     <div class="tags">
       <span class="tag">Python</span>
       <span class="tag">LLM / agents</span>
       <span class="tag">Hybrid local + frontier</span>
-      <span class="tag">Human-in-the-loop</span>
+      <span class="tag">Resolve or escalate</span>
       <span class="tag">Two-stage pipeline</span>
       <span class="tag">Synthetic data</span>
     </div>
@@ -51,26 +52,34 @@
       categories, so the one field used for reporting and routing can't be trusted.
     </p>
     <p>
-      The toolkit attacks both problems: standardize first contact for new tickets, and
-      clean up the category data on old ones &mdash; while keeping a human firmly in
-      control of anything that actually changes a ticket.
+      The toolkit attacks both problems: resolve what can be resolved at first contact for
+      new tickets, and clean up the category data on old ones. The agent handles routine
+      issues with the user directly and escalates the rest to a technician with full context.
     </p>
   </div>
 
   <div class="section">
-    <div class="section-title">Tool 1 &mdash; Triage Agent</div>
+    <div class="section-title">Tool 1 &mdash; Tier-1 Support Agent</div>
     <p>
-      Reads an inbound ticket, retrieves relevant knowledge-base context by keyword match,
-      and produces a structured proposal: a category, a priority, the minimum information a
-      technician still needs, and a drafted Tier-1 reply. Crucially, it is
-      <strong>proposal-only</strong> &mdash; it observes and suggests, and never creates,
-      edits, or closes a ticket on its own. Every output is a draft a technician approves.
+      An autonomous agent that tries to <strong>resolve the ticket with the user</strong>, and
+      escalates cleanly when it can't. Two-stage routing classifies the ticket and scores
+      confidence: a high-confidence routine issue gets a canned, knowledge-base-backed
+      self-service answer with <strong>no model call at all</strong>; everything else enters a
+      conversational path where the agent retrieves KB context and walks the user through a fix
+      one step at a time.
+    </p>
+    <p>
+      If the user confirms it's fixed within a few turns, it's resolved &mdash; no ticket. If
+      not, the agent creates a <strong>categorized ticket</strong> carrying the priority and the
+      full transcript, and routes it to the help desk queue so a technician starts with context
+      instead of a blank page. The conversation is deliberately bounded &mdash; it works the
+      issue for a few turns, then hands off rather than looping forever.
     </p>
     <div class="pipeline">
-      <div class="pipe-step"><div class="step-label">Ingest</div><div class="step-desc">Read the ticket text</div></div>
-      <div class="pipe-step"><div class="step-label">Retrieve</div><div class="step-desc">Pull relevant KB context</div></div>
-      <div class="pipe-step"><div class="step-label">Propose</div><div class="step-desc">Category, priority, missing info, draft reply</div></div>
-      <div class="pipe-step"><div class="step-label">Review</div><div class="step-desc">Technician approves &mdash; no auto-action</div></div>
+      <div class="pipe-step"><div class="step-label">Route</div><div class="step-desc">Classify + confidence score</div></div>
+      <div class="pipe-step"><div class="step-label">Self-serve</div><div class="step-desc">Canned KB answer for routine issues &mdash; no model call</div></div>
+      <div class="pipe-step"><div class="step-label">Converse</div><div class="step-desc">KB-grounded troubleshooting with the user</div></div>
+      <div class="pipe-step"><div class="step-label">Resolve / escalate</div><div class="step-desc">Close it, or open a categorized ticket for a technician</div></div>
     </div>
   </div>
 
@@ -133,8 +142,8 @@
   <div class="section">
     <div class="section-title">Security Posture</div>
     <ul>
-      <li><strong>Human-in-the-loop is mandatory.</strong> The agent only ever produces a proposal; it never takes action on a ticket.</li>
-      <li><strong>Model output is untrusted data.</strong> Every model response passes through a validation layer before use &mdash; the category is allowlisted, the priority constrained, the confidence clamped &mdash; so a malformed or surprising response can't propagate downstream.</li>
+      <li><strong>Bounded autonomy.</strong> The agent's actions are limited to talking to the user and opening an intake ticket; it escalates anything it can't resolve and takes no destructive or privileged actions on its own.</li>
+      <li><strong>Model output is untrusted data.</strong> Every model turn passes through a validation layer that constrains the status to a known set and guards the message before the agent loop acts on it &mdash; a malformed or surprising response can't drive the loop off the rails.</li>
       <li><strong>Synthetic data only.</strong> The bundled tickets and knowledge base are generated and seeded; there is no resemblance to any real organization's data.</li>
     </ul>
   </div>

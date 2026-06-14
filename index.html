@@ -25,8 +25,8 @@
     <p class="about">
       I'm an IT support professional moving into AI engineering and automation. I build
       practical, security-conscious systems that put language models to work on real
-      operational problems &mdash; ticket triage, backlog cleanup, data redaction &mdash; with
-      a strong bias toward keeping humans in the loop, keeping costs low, and keeping
+      operational problems &mdash; ticket resolution, backlog cleanup, data redaction &mdash; with
+      a strong bias toward knowing when to escalate to a human, keeping costs low, and keeping
       sensitive data on infrastructure I control. I read and direct code rather than
       hand-writing every line, and I care about being able to explain and defend every
       design decision I ship.
@@ -46,19 +46,19 @@
     <a class="project-card" href="helpdesk-toolkit.html">
       <div class="card-title">Help Desk AI Toolkit</div>
       <div class="card-summary">
-        Two LLM-powered tools for an IT help desk on a shared classification core: a
-        Tier-1 <strong>triage agent</strong> that reads a ticket, pulls knowledge-base
-        context, and drafts a response for human approval, and a <strong>bulk
-        categorizer</strong> that cleans up a backlog with a two-stage keyword-then-model
-        pipeline. The headline design choice is a hybrid model architecture &mdash; a
-        frontier model for hard reasoning, a local open-source model for cheap
-        high-volume work &mdash; exposed as a single config switch.
+        Two LLM-powered tools for an IT help desk on a shared classification core: an
+        autonomous Tier-1 <strong>support agent</strong> that resolves routine issues with
+        the user through a short troubleshooting conversation and escalates to a technician
+        when it can't, and a <strong>bulk categorizer</strong> that cleans up a backlog with
+        a two-stage keyword-then-model pipeline. The headline design choice is a hybrid model
+        architecture &mdash; a frontier model for hard reasoning, a local open-source model
+        for cheap high-volume work &mdash; exposed as a single config switch.
       </div>
       <div class="tags">
         <span class="tag">Python</span>
         <span class="tag">LLM / agents</span>
         <span class="tag">Hybrid local + frontier</span>
-        <span class="tag">Human-in-the-loop</span>
+        <span class="tag">Resolve or escalate</span>
         <span class="tag">Synthetic data</span>
       </div>
       <div class="card-link" style="margin-top:14px;">Read the writeup &rarr;</div>
